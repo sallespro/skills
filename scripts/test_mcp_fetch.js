@@ -4,7 +4,7 @@
  */
 import 'dotenv/config';
 
-const API_URL = 'http://localhost:3001';
+const API_URL = 'http://localhost:3081';
 const TEST_EMAIL = 'cloud2pilot@gmail.com';
 const MCP_SERVER_URL = 'https://cool.cloudpilot.com.br/mcp';
 

@@ -1,7 +1,7 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 
-const MCP_URL = 'http://localhost:3001/api/mcp';
+const MCP_URL = 'http://localhost:3081/api/mcp';
 const TEST_EMAIL = 'cloud2pilot@gmail.com';
 
 async function test() {

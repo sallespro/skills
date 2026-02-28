@@ -6,10 +6,10 @@ services:
         - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
         - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
     ports:
-      - "3001:3001"
+      - "3081:3081"
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - PORT=3081
       - SUPABASE_ACCESS_TOKEN=${SUPABASE_ACCESS_TOKEN}
       - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
       - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}

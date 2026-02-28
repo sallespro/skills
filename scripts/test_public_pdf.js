@@ -3,7 +3,7 @@ import 'dotenv/config';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'http://localhost:3081';
 
 async function test() {
     try {

@@ -39,7 +39,7 @@ RUN npm run build
 ENV NODE_ENV=production
 
 # Expose the port the app runs on
-EXPOSE 3001
+EXPOSE 3081
 
 # Start the server
 CMD ["node", "server/index.js"]

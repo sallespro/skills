@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
+const API_URL = import.meta.env.PROD ? '' : 'http://localhost:3081';
 
 /**
  * Get stored JWT token
