@@ -17,5 +17,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - RESEND_API_KEY=${RESEND_API_KEY}
+      - MCP_URL=${MCP_URL}
+      - A2A_DEFAULT_EMAIL=${A2A_DEFAULT_EMAIL}
     restart: always
 
