@@ -14,6 +14,11 @@ import guidedSessionsRouter from './routes/guided-sessions.js';
 import bundlesRouter from './routes/bundles.js';
 import mcpRouter from './routes/mcp.js';
 
+// A2A Protocol
+import { AGENT_CARD_PATH } from '@a2a-js/sdk';
+import { agentCardHandler, jsonRpcHandler, restHandler, UserBuilder } from '@a2a-js/sdk/server/express';
+import { createA2ARequestHandler } from './a2a/a2aServer.js';
+
 // Middleware
 import { authMiddleware } from './middleware/auth.js';
 
@@ -35,6 +40,12 @@ app.use('/api/auth', authRouter);
 app.use('/api/webhooks', webhooksRouter);
 app.use('/api/rag', ragRouter);
 app.use('/api/mcp', mcpRouter);
+
+// A2A Protocol routes (public, no auth required)
+const a2aRequestHandler = createA2ARequestHandler();
+app.use(`/${AGENT_CARD_PATH}`, agentCardHandler({ agentCardProvider: a2aRequestHandler }));
+app.use('/a2a/jsonrpc', jsonRpcHandler({ requestHandler: a2aRequestHandler, userBuilder: UserBuilder.noAuthentication }));
+app.use('/a2a/rest', restHandler({ requestHandler: a2aRequestHandler, userBuilder: UserBuilder.noAuthentication }));
 
 // Health check
 app.get('/api/health', (req, res) => {

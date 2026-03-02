@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { MessageSquare, Layout as LayoutIcon, FileText, Settings, Menu, LogOut, History, Plus, Wrench } from 'lucide-react';
+import { MessageSquare, Layout as LayoutIcon, FileText, Settings, Menu, LogOut, History, Plus, Wrench, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getUser, logout, isAuthenticated } from '@/lib/api';
 import AuthModal from './AuthModal';
 import ChatInterface from './ChatInterface';
+import A2APanel from './A2APanel';
 import LandingPage from './LandingPage';
 
 const navItems = [
@@ -21,6 +22,7 @@ const navItems = [
 export default function Layout() {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [chatOpen, setChatOpen] = useState(true);
+    const [rightPanel, setRightPanel] = useState('chat'); // 'chat' | 'a2a'
     const [user, setUser] = useState(() => getUser());
 
     // Auth state
@@ -173,46 +175,79 @@ export default function Layout() {
                         <button
                             onClick={() => setChatOpen(!chatOpen)}
                             className="p-2 rounded-lg hover:bg-muted transition-colors"
-                            title={chatOpen ? "Close chat" : "Open chat"}
+                            title={chatOpen ? "Close panel" : "Open panel"}
                         >
                             <MessageSquare className="w-5 h-5" />
                         </button>
                         {chatOpen && (
                             <div className="flex items-center gap-1 ml-1 border-l border-border pl-2 animate-in fade-in duration-300">
-                                <button
-                                    onClick={() => chatRef.current?.createNewChat()}
-                                    className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primary"
-                                    title="New Chat"
-                                >
-                                    <Plus className="w-4.5 h-4.5" />
-                                </button>
-                                <button
-                                    onClick={() => chatRef.current?.toggleMcpSetup()}
-                                    className={cn(
-                                        "p-1.5 rounded-lg transition-colors relative",
-                                        mcpConnected
-                                            ? "text-primary hover:bg-primary/10"
-                                            : "text-muted-foreground hover:bg-muted hover:text-primary"
-                                    )}
-                                    title="MCP Tools"
-                                >
-                                    <Wrench className="w-4.5 h-4.5" />
-                                    {mcpConnected && (
-                                        <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full border border-background" />
-                                    )}
-                                </button>
+                                {rightPanel === 'chat' && (
+                                    <>
+                                        <button
+                                            onClick={() => chatRef.current?.createNewChat()}
+                                            className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-primary"
+                                            title="New Chat"
+                                        >
+                                            <Plus className="w-4.5 h-4.5" />
+                                        </button>
+                                        <button
+                                            onClick={() => chatRef.current?.toggleMcpSetup()}
+                                            className={cn(
+                                                "p-1.5 rounded-lg transition-colors relative",
+                                                mcpConnected
+                                                    ? "text-primary hover:bg-primary/10"
+                                                    : "text-muted-foreground hover:bg-muted hover:text-primary"
+                                            )}
+                                            title="MCP Tools"
+                                        >
+                                            <Wrench className="w-4.5 h-4.5" />
+                                            {mcpConnected && (
+                                                <span className="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full border border-background" />
+                                            )}
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
                     {chatOpen && (
-                        <span className="font-medium text-muted-foreground text-sm">Agent</span>
+                        <div className="flex items-center bg-muted/50 rounded-lg p-0.5">
+                            <button
+                                onClick={() => setRightPanel('chat')}
+                                className={cn(
+                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all",
+                                    rightPanel === 'chat'
+                                        ? "bg-background text-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                <MessageSquare className="w-3 h-3" />
+                                Chat
+                            </button>
+                            <button
+                                onClick={() => setRightPanel('a2a')}
+                                className={cn(
+                                    "flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-all",
+                                    rightPanel === 'a2a'
+                                        ? "bg-background text-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
+                                )}
+                            >
+                                <Zap className="w-3 h-3" />
+                                A2A
+                            </button>
+                        </div>
                     )}
                 </div>
 
                 {/* Chat Content */}
                 {chatOpen && (
                     <div className="flex-1 overflow-hidden">
-                        <ChatInterface ref={chatRef} />
+                        {rightPanel === 'chat' ? (
+                            <ChatInterface ref={chatRef} />
+                        ) : (
+                            <A2APanel />
+                        )}
                     </div>
                 )}
             </aside>
